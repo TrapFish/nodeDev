@@ -1,0 +1,21 @@
+{
+  "name": "nodedevbe",
+  "version": "1.0.0",
+  "description": "Node BE Chnages for dev",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "Javascript"
+  ],
+  "author": "Kumar Gourav",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  }
+}
