@@ -15,6 +15,10 @@ const PORT = process.PORT || 3000;
 //     res.send('Default Page')
 // });
 
+app.use('/', (req, res)=>{
+    res.send('Default Page')
+});
+
 app.use('/home', (req, res)=>{
     res.send('Hello from the server home page dvbfgvsdfvsfdsfgrr')
 });
