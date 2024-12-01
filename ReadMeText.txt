@@ -128,4 +128,55 @@ Scope	Global or route-specific	Specific to a particular HTTP method
 Purpose	Middleware functions (logging, error handling, authentication)	Handling specific HTTP requests
 Execution Order	Global middleware is executed first, followed by route-specific middleware	HTTP methods are executed after matching routes
 
+============================
+***** NEXT parameter ******
+============================
+app.get ("/", 
+    (req, res, next)=>{
+        // it will come here and return the data , if it is commented and then we hit the server then it will move to infinite loop as we haven't called next
+        // next is the additional feature added here or additional parameter to handle the next response
+     
+     //   res.send ("Hello world");
+     next();
+    }, 
+    (req,res)=>{
+    res.send("Hello World 2")
 
+})
+
+
+
+exception
+==========
+
+case1
+=======
+// here we are calling the "/", then the first request handler come in the picture and then it will send Hello world to the server and TCP connection is closed
+// then it will hit next and since the socket is closed it will through error 
+// Here the output will be Hello World , with error
+app.get ("/", 
+    (req, res, next)=>{
+       
+        res.send ("Hello world");
+         next();
+       
+    }, 
+    (req,res)=>{
+    res.send("Hello World 2")
+
+})
+
+// here we are calling the "/", then the first request handler come in the picture and then it will call the next function and then send res
+// with Hello World 2
+// and then throw error as socket will be closed 
+
+app.get ("/", 
+    (req, res, next)=>{
+         next();
+        res.send ("Hello world");
+       
+    }, 
+    (req,res)=>{
+    res.send("Hello World 2")
+
+})
