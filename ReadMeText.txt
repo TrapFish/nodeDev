@@ -87,4 +87,45 @@ app.get("/user/:userId/:userName", (req, res)=>{
 app.listen(PORT, ()=>{
     console.log(`Server is successfully listening on port ${PORT}....`);
 });
+=========================
+
+
+// here get request with /user and /us?er both will work as "s" become optional and will be able to /user or /uer
+// here get request with /user and /us+er both will work as any number of "s" added and will be user for /user or /usssssser both will work, however it will fail in /ussseer as + is with s only and not with e.
+// /us*er --> will work for /user, /usKumarGouraver --> both will work . as we can add any text between us and er , but yes it sould start with us and end with er
+// group between the route /u(se)?r --> in route /user , "se" is optional we can use /ur also
+//dynamic route /user/123=== /user/:userId -- req.params is used to read --- req.params
+// query param --- ?userId=101&userText="Kumar"  -- req.query
+app.get("/user/:userId/:userName", (req, res)=>{
+    console.log("requested query param ::", req.query, req.params);
+    res.send({firstName: "Kumar", lastName: "Gourav", email: "gourav3492@gmail.com"})
+});
+
+=============================================
+
+Routing and Middleware
+==========================
+
+Understanding app.use() vs. HTTP Methods in Express.js
+
+In Express.js, app.use() and HTTP methods like GET, POST, PUT, DELETE, etc., are fundamental tools for defining routes and handling requests. However, they serve distinct purposes.
+
+app.use():
+
+Global Middleware: When used without a specific path, app.use() defines middleware that will be executed for every incoming request to the application.
+Route-Specific Middleware: When used with a path, app.use() defines middleware that will be executed only for requests matching that specific path.
+HTTP Methods:
+
+Specific Request Handling: HTTP methods are used to define specific actions that can be performed on a resource. For example:
+GET: Retrieves a resource.
+POST: Creates a new resource.
+PUT: Updates an existing resource.
+DELETE: Deletes a resource.
+Key Differences:
+
+Feature	app.use()	HTTP Methods
+Scope	Global or route-specific	Specific to a particular HTTP method
+Purpose	Middleware functions (logging, error handling, authentication)	Handling specific HTTP requests
+Execution Order	Global middleware is executed first, followed by route-specific middleware	HTTP methods are executed after matching routes
+
 
