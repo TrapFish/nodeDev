@@ -2,12 +2,15 @@ const express = require('express');
 const app = express(); 
 const PORT = process.PORT || 3000;
 
-const {authAdmin} = require("./middlewares/auth.js");
+const {authAdmin, authUser} = require("./middlewares/auth.js");
 
 
 app.use('/admin', authAdmin);
 
-app.get("/user", (req, res) => {
+//since here is only one /user so we can skip app.use and implement it on route specific
+//app.use("/user", authUser);
+
+app.get("/user", authUser, (req, res) => {
     res.send("User is fetched")
 })
 
