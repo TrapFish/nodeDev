@@ -2,28 +2,26 @@ const express = require('express');
 const app = express(); 
 const PORT = process.PORT || 3000;
 
-const {authAdmin, authUser} = require("./middlewares/auth.js");
-
-
-app.use('/admin', authAdmin);
-
-//since here is only one /user so we can skip app.use and implement it on route specific
-//app.use("/user", authUser);
-
-app.get("/user", authUser, (req, res) => {
-    res.send("User is fetched")
+app.use('/',(err, req, res, next)=>{
+    if(err) {
+      res.send("error 8")
+    }
 })
 
-app.get("/admin", (req, res) => {
-    res.send("Hello World");
+app.get("/userSS", (req, res)=>{
+    throw new Error("Error is getting thrown");
+    // try {
+    //     throw new Error("Error is getting thrown");
+    // } catch (error) {
+    //     console.log("Line 21 with error");
+    //     res.status(500).send("Error is there ")
+    // }
 })
 
-app.get("/admin/getAllData", (req, res)=>{
-    res.send("Data is sent back from admin")
-})
-
-app.get("/admin/deleteAllData", (req, res)=> {
-    res.send("Data is deleted")
+app.use('/',(err, req, res, next)=>{
+    if(err) {
+      res.send("error 23")
+    }
 })
 
 app.listen(PORT, ()=>{
