@@ -33,7 +33,6 @@ app.post("/signup", async (req, res) => {
 app.get("/signup", async (req, res) => {
   try {
     const users = await User.find();
-    console.log("Line 33", users);
     res.send("User data fetched")
   } catch (error) {
     res.status(400).send(error);
