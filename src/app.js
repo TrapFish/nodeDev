@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express();
 const connectDb = require("./config/database");
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 const PORT = process.PORT || 3000;
 const User = require("./models/user");
 
 
-app.use(bodyParser.json());
-
+//app.use(bodyParser.json());
+app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   const { firstName, lastName, emailId, password, age, gender } = req.body;
