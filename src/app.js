@@ -27,17 +27,39 @@ app.post("/signup", async (req, res) => {
     res.status(400).send(error);
   }
 
-})
+});
 
 
 app.get("/signup", async (req, res) => {
   try {
     const users = await User.find();
-    res.send("User data fetched")
+    if (users.length === 0) {
+      res.status(400).send("No record found");
+    } else {
+      res.send(users);
+    }
+
   } catch (error) {
     res.status(400).send(error);
   }
 
+});
+
+app.get("/getUser", async (req, res) => {
+  try {
+    let emailId = req.body.emailId;
+    const users = await User.find({
+      emailId: emailId
+    });
+    if (users.length === 0) {
+      res.status(400).send("No record found");
+    } else {
+      res.send(users);
+    }
+
+  } catch (error) {
+    res.status(400).send(error);
+  }
 })
 
 connectDb().then(async (connection) => {
