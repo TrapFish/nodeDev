@@ -276,10 +276,14 @@ app.listen(PORT, ()=>{
     console.log(`Server is successfully listening on port ${PORT}....`);
 });
 
+==================================================================
 
+required == used for mandetory
+unique == avoid repeatation
 
-
-
+default ==  used as default value which is required 
+loewercase == will always add in lower case
+trim === will remove the white spaces
 
 
 
