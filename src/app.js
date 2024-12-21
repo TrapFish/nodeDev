@@ -4,27 +4,38 @@ const connectDb = require("./config/database");
 const bodyParser = require('body-parser');
 const PORT = process.PORT || 3000;
 const User = require("./models/user");
+const { validateSignUpData } = require("./utils/validation");
+const bcrypt = require('bcrypt');
 
 
 app.use(bodyParser.json());
 //app.use(express.json()); -- same functionality of the body parser
 
 app.post("/signup", async (req, res) => {
-  const { firstName, lastName, emailId, password, age, gender } = req.body;
-  const newUser = new User({
-    firstName,
-    lastName,
-    emailId,
-    password,
-    age,
-    gender
-  });
 
   try {
+    //Validation of the Data
+    validateSignUpData(req);
+
+    const { firstName, lastName, emailId, password, age, gender } = req.body;
+
+    //Encript the password and then store the data
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      firstName,
+      lastName,
+      emailId,
+      password: passwordHash,
+      age,
+      gender
+    });
+
+
     await newUser.save();
     res.send("User is saved");
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send("ERROR :: " + error.message);
   }
 
 });
@@ -62,38 +73,38 @@ app.get("/getUser", async (req, res) => {
   }
 })
 
-app.delete("/user", async (req, res)=>{
-   const userId =  req.body.userId;
-   console.log("Delete", userId);
-   try {
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  console.log("Delete", userId);
+  try {
     const user = await User.findByIdAndDelete(userId);
     res.send("User deleted successfully")
-   } catch (error) {
+  } catch (error) {
     res.status(400).send(error);
-   }
+  }
 })
 
-app.patch("/user/:userId", async (req, res)=>{
+app.patch("/user/:userId", async (req, res) => {
   const userId = req.params?.userId;
   const data = req.body;
 
- 
+
   try {
     // await User.findByIdAndUpdate(userId, {emailId: data.emailId});
     const ALLOWED_UPDATES = [
       "photoUrl", "about", "gender", "age", "skills"
     ]
-  
+
     const isUpdateAllowed = Object.keys(data).every(k => ALLOWED_UPDATES.includes(k));
-  
-    if(!isUpdateAllowed){
+
+    if (!isUpdateAllowed) {
       throw new Error("Update Not allowed");
     }
 
-    if(data?.skills.length > 10){
+    if (data?.skills.length > 10) {
       throw new Error("Skills cann't be more than 10");
     }
-  
+
     await User.findByIdAndUpdate(userId, data, {
       returnDocument: "after",
       runValidators: true,
