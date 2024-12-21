@@ -6,6 +6,7 @@ const PORT = process.PORT || 3000;
 const User = require("./models/user");
 const { validateSignUpData } = require("./utils/validation");
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 
 
 app.use(bodyParser.json());
@@ -40,6 +41,27 @@ app.post("/signup", async (req, res) => {
 
 });
 
+app.post('/login' ,   async (req, res) => {
+  try {
+    const {emailId , password} = req.body;
+    if(!validator.isEmail(emailId)){
+      throw new Error("Email is not valid");
+    }
+   
+    const userFind = await User.findOne({ emailId });
+    if(!userFind){
+      throw new Error("Invalid Credentials");
+    }
+    const isPassWordValid = await bcrypt.compare(password, userFind?.password);
+    if(isPassWordValid){
+      res.send("User Logged in Successfully");
+    } else {
+      throw new Error("Invalid Credentials");
+    }
+  } catch (error) {
+    res.status(400).send("ERROR :: " + error.message);
+  }
+})
 
 app.get("/signup", async (req, res) => {
   try {
