@@ -284,7 +284,21 @@ unique == avoid repeatation
 default ==  used as default value which is required 
 loewercase == will always add in lower case
 trim === will remove the white spaces
+minlength and maxlength === User validation failed: firstName: Path `firstName` (`Mar`) is shorter than the minimum allowed length (4).
+ 
 
+ custome validation ----->>>
+ ================================
+
+ User validation failed: gender: Gender data is not valid
+
+
+ validate method doesnot work on the patch , it will work for the new data signed up.
+
+ So basically the validate method works only on the new object created and will not work on the patchor put request or the existing record
+ we will have to enable it to run on the Updates
+
+regisdtering a user timestamp and updating It
 
 
 
