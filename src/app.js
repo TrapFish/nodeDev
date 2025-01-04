@@ -7,9 +7,12 @@ const User = require("./models/user");
 const { validateSignUpData } = require("./utils/validation");
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 //app.use(express.json()); -- same functionality of the body parser
 
 app.post("/signup", async (req, res) => {
@@ -54,6 +57,12 @@ app.post('/login' ,   async (req, res) => {
     }
     const isPassWordValid = await bcrypt.compare(password, userFind?.password);
     if(isPassWordValid){
+     //create  a JWT token
+     const token = await jwt.sign({_id: userFind._id}, "DEV@NoDE030492")
+    
+     //Add the token to cookie and send the response back to the user
+      res.cookie("token", token);
+
       res.send("User Logged in Successfully");
     } else {
       throw new Error("Invalid Credentials");
@@ -61,9 +70,32 @@ app.post('/login' ,   async (req, res) => {
   } catch (error) {
     res.status(400).send("ERROR :: " + error.message);
   }
+});
+
+app.get('/profile', async (req, res) => {
+  try {
+    //Get the token from the cookie
+    const cookie = req.cookies;
+    const {token} = cookie; 
+
+    //Verify the token
+    const decodedMessage = await jwt.verify(token, "DEV@NoDE030492");
+
+    //Get the user data
+    const {_id} = decodedMessage;
+    const user = await User.findById(_id);
+
+    if(!user){
+      throw new Error("User not found");
+    }
+    //Send the user data
+    res.send(user);
+  } catch (error) {
+    res.status(400).send("ERROR :: " + error.message);
+  }
 })
 
-app.get("/signup", async (req, res) => {
+app.get("/feed", async (req, res) => {
   try {
     const users = await User.find();
     if (users.length === 0) {
