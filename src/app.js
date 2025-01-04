@@ -55,10 +55,12 @@ app.post('/login' ,   async (req, res) => {
     if(!userFind){
       throw new Error("Invalid Credentials");
     }
-    const isPassWordValid = await bcrypt.compare(password, userFind?.password);
+    const isPassWordValid = await userFind.validatePassword(password);
     if(isPassWordValid){
      //create  a JWT token
-     const token = await jwt.sign({_id: userFind._id}, "DEV@NoDE030492",  { expiresIn: "7d" })
+    //  const token = await jwt.sign({_id: userFind._id}, "DEV@NoDE030492",  { expiresIn: "7d" })
+
+    const token = await userFind.getJWT();
     
      //Add the token to cookie and send the response back to the user
       res.cookie("token", token);
