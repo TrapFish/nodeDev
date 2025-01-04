@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-
+const { userAuth } = require('./middlewares/auth');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -58,7 +58,7 @@ app.post('/login' ,   async (req, res) => {
     const isPassWordValid = await bcrypt.compare(password, userFind?.password);
     if(isPassWordValid){
      //create  a JWT token
-     const token = await jwt.sign({_id: userFind._id}, "DEV@NoDE030492")
+     const token = await jwt.sign({_id: userFind._id}, "DEV@NoDE030492",  { expiresIn: "7d" })
     
      //Add the token to cookie and send the response back to the user
       res.cookie("token", token);
@@ -72,28 +72,39 @@ app.post('/login' ,   async (req, res) => {
   }
 });
 
-app.get('/profile', async (req, res) => {
+app.get('/profile', userAuth , async (req, res) => {
   try {
     //Get the token from the cookie
-    const cookie = req.cookies;
-    const {token} = cookie; 
+    // const cookie = req.cookies;
+    // const {token} = cookie; 
 
     //Verify the token
-    const decodedMessage = await jwt.verify(token, "DEV@NoDE030492");
+    //const decodedMessage = await jwt.verify(token, "DEV@NoDE030492");
 
     //Get the user data
-    const {_id} = decodedMessage;
-    const user = await User.findById(_id);
+    //const {_id} = decodedMessage;
+    //const user = await User.findById(_id);
+    const user = req.user;
 
-    if(!user){
-      throw new Error("User not found");
-    }
+    console.log("User", user);
+    // if(!user){
+    //   throw new Error("User not found");
+    // }
     //Send the user data
     res.send(user);
   } catch (error) {
     res.status(400).send("ERROR :: " + error.message);
   }
 })
+
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    res.send(`${user.firstName} has sent a connection request`);
+  } catch (error) {
+    res.status(400).send("ERROR :: " + error.message);
+  }
+});
 
 app.get("/feed", async (req, res) => {
   try {
