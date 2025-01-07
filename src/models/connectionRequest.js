@@ -22,4 +22,14 @@ const connectionRequestSchema = new Schema({
     timestamps: true
 });
 
+// it will be called before any save and hence called pre save
+connectionRequestSchema.pre('save', async function (next) {
+    const connectionRequest = this;
+    // will be checking the toUserId and fromUserId are same or not
+    if(connectionRequest.fromUserId .equals(connectionRequest.toUserId)){
+        throw new Error("You can not send request to yourself");
+    }
+    next();
+});
+
 module.exports = mongoose.model('ConnectionRequest', connectionRequestSchema);
