@@ -24,12 +24,12 @@ requestRouter.post("/request/send/:status/:toUserId", userAuth, async (req, res)
       })
     }
 
-    const sameUser = fromUserId === toUserId;
-    if (!sameUser) {
-      return res.status(400).json({
-        message: "You can not send request to yourself"
-       });
-    }
+    // const sameUser = fromUserId === toUserId;
+    // if (!sameUser) {
+    //   return res.status(400).json({
+    //     message: "You can not send request to yourself"
+    //    });
+    // }
 
     // we will check if the request is already sent or not
     const existingRequest = await ConnectionRequest.findOne({
