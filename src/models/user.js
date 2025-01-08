@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
                 required: true,
                 minLength: 4,
                 maxLength: 58,
+                index: true,
         },
         lastName: {
                 type: String,
@@ -19,8 +20,8 @@ const userSchema = new mongoose.Schema({
                 required: true,
                 unique: true,
                 trim: true,
-                validate(value){
-                        if(!validator.isEmail(value)){
+                validate(value) {
+                        if (!validator.isEmail(value)) {
                                 throw new Error("Invalid Email Address  " + value);
                         }
                 }
@@ -28,8 +29,8 @@ const userSchema = new mongoose.Schema({
         password: {
                 type: String,
                 required: true,
-                validate(value){
-                        if(!validator.isStrongPassword(value)){
+                validate(value) {
+                        if (!validator.isStrongPassword(value)) {
                                 throw new Error("Enter strong password   " + value);
                         }
                 }
@@ -49,8 +50,8 @@ const userSchema = new mongoose.Schema({
         photoUrl: {
                 type: String,
                 default: 'https://avatars.githubusercontent.com/u/59255732?v=4',
-                validate(value){
-                        if(!validator.isURL(value)){
+                validate(value) {
+                        if (!validator.isURL(value)) {
                                 throw new Error("Invalid Photo URL  " + value);
                         }
                 }
@@ -70,7 +71,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.getJWT = async function () {
         const user = this;
-        const token = await jwt.sign({_id: user._id}, "DEV@NoDE030492",  { expiresIn: "7d" });
+        const token = await jwt.sign({ _id: user._id }, "DEV@NoDE030492", { expiresIn: "7d" });
         return token;
 }
 

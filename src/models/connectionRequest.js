@@ -22,6 +22,10 @@ const connectionRequestSchema = new Schema({
     timestamps: true
 });
 
+
+//connectionRequest.find({fromUserId: , toUserID: })
+connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 })
+
 // it will be called before any save and hence called pre save
 connectionRequestSchema.pre('save', async function (next) {
     const connectionRequest = this;
