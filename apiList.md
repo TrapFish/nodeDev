@@ -28,3 +28,13 @@ userRouter
 
 Status: ignored(pass), interested(like), accepted, rejected
 
+
+
+to build a project in netify 
+
+npm run build
+it gives a static server that we can use on computer
+npm install -g serve
+serve -s build
+go to netlify.com and sign in
+
