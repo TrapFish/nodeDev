@@ -3,6 +3,13 @@ const app = express();
 const connectDb = require("./config/database");
 const bodyParser = require('body-parser');
 const PORT = process.PORT || 3000;
+const cors = require('cors');
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+  
+}));
 // const User = require("./models/user");
 // const { validateSignUpData } = require("./utils/validation");
 // const bcrypt = require('bcrypt');
