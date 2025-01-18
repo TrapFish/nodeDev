@@ -57,7 +57,7 @@ authRouter.post('/login' ,   async (req, res) => {
   
         res.json({message: `User Logged in Successfully !!!`, userData : userFind});
       } else {
-        throw new Error("Invalid Credentials");
+        res.status(401).send("Invalid Credentials");
       }
     } catch (error) {
       res.status(400).send("ERROR :: " + error.message);
