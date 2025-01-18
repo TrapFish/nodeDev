@@ -68,7 +68,11 @@ authRouter.post('/logout', async (req, res) => {
     try {
       //res.clearCookie("token");
       res.cookie("token", null, {expires: new Date(Date.now())});
-      res.send("User Logged out Successfully");
+      res.json(
+        {
+          message : "User Logged out Successfully"
+        }
+      );
     } catch (error) {
       res.status(400).send("ERROR :: " + error.message);
     }
