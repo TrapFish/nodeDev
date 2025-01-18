@@ -9,7 +9,9 @@ const userAuth = async (req, res, next) => {
         const { token } = cookies;
 
         if(!token){
-            throw new Error("Token not found");
+            return res.status(401).json({
+                message: 'Please login'
+            })
         }
 
         // Validate the token
