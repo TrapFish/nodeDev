@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 const PORT = process.PORT || 3000;
 const cors = require('cors');
 
+const allowedOrigin = ["http://localhost:5173", "http://13.51.13.44"]
+
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: allowedOrigin,
   credentials: true,
 
 }));

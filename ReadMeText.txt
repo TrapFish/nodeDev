@@ -306,5 +306,14 @@ API Level validation
 
 I dont want my email id to be changed when updating during api implementation
 
+==============================================================================================
+
+
+
+ "scripts": {
+    "start": "node src/app.js", //===> Production
+    "dev": "nodemon src/app.js"//development mode //===> Development
+  }
+
 
 
