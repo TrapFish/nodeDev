@@ -1,10 +1,11 @@
 const express = require('express');
+require('dotenv').config({ path: './.env' })
 const app = express();
 const connectDb = require("./config/database");
 const bodyParser = require('body-parser');
 const PORT = process.PORT || 3000;
 const cors = require('cors');
-
+console.log("lslls",process.env, process.env.REGION, process.env.SES_AWS_ACCESS_KEY, process.env.SES_AWS_SECRET_KEY)
 const allowedOrigin = ["http://localhost:5173", "http://13.51.13.44"]
 
 app.use(cors({
