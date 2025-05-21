@@ -3,7 +3,7 @@ const userRouter = express.Router();
 const { userAuth } = require('../middlewares/auth');
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require('../models/user');
-
+const sendEmail  = require("../utils/sendEmail.js"); 
 const USER_SAFE_DATA = 'firstName lastName age gender photoUrl about skills'
 
 //get all the pending connection request for the logged in user
@@ -65,13 +65,13 @@ userRouter.get('/user/connections', userAuth, async (req, res) => {
 
 userRouter.get('/user/feed', userAuth, async (req, res) => {
     try {
-       
+
         const loggedInUser = req.user;
-   
+
         const page = +req.query.page || 1;
         let limit = +req.query.limit || 10;
         limit = limit > 50 ? 50 : limit;
-        const skip = (page -1) * limit ;
+        const skip = (page - 1) * limit;
 
         const connectionRequest = await ConnectionRequest.find({
             $or: [
@@ -103,6 +103,16 @@ userRouter.get('/user/feed', userAuth, async (req, res) => {
             message: error.message
         })
     }
+})
+
+userRouter.get('/user/sendMail', async (req, res) => {
+    let emailResult = await sendEmail.run();
+    console.log("Result is ::", emailResult)
+    res.json({
+        message: "Email is sent successfully",
+        data: emailResult
+    })
+   
 })
 
 module.exports = userRouter;
