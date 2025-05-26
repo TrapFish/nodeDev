@@ -107,7 +107,7 @@ userRouter.get('/user/feed', userAuth, async (req, res) => {
 
 userRouter.get('/user/sendMail', async (req, res) => {
     let emailResult = await sendEmail.run();
-    console.log("Result is ::", emailResult)
+
     res.json({
         message: "Email is sent successfully",
         data: emailResult
